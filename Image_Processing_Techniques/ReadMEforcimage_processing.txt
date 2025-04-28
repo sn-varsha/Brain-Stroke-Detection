@@ -1,0 +1,3 @@
+The U-Net model was trained in this project; however, due to insufficient data, it failed to achieve satisfactory results. You may further develop and improve the model if you wish. 
+Additionally, classical filtering methods were also applied. While successful results were obtained for hemorrhage detection, the success rate was lower for ischemic images. 
+Therefore, assistance may be necessary when segmenting ischemic stroke images.
