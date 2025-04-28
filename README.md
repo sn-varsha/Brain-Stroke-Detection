@@ -1,3 +1,3 @@
-# Stroke_Detection-and-Segmntation-by-Using-Machine-Learning
+# Stroke_Detection-and-Segmentation-by-Using-Machine-Learning
 Denge ve ben ...
 
