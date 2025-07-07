@@ -113,4 +113,16 @@ python train_random_forest.py
 ---
 
 > 🔍 This hybrid approach enables robust classification and segmentation of medical images for stroke diagnosis.
-
+ 
+---
+---
+![Screenshot 2025-07-08 015633](https://github.com/user-attachments/assets/c584cd35-32e7-468d-a96c-0ec85a00f79d)
+---
+---
+![Screenshot 2025-07-08 015642](https://github.com/user-attachments/assets/55130815-12d8-4d67-9ce8-dc2fe52ef916)
+---
+---
+![Screenshot 2025-07-08 015442](https://github.com/user-attachments/assets/3a84aac3-5478-45be-9b22-6e0aec62e2a7)
+---
+---
+![Screenshot 2025-07-08 015525](https://github.com/user-attachments/assets/ba6c1b45-d539-4e42-9f51-eb78da0840c7)
