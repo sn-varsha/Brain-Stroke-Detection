@@ -116,11 +116,11 @@ python train_random_forest.py
 ```
 ---
 
-![Screenshot 2025-07-08 015633](https://github.com/user-attachments/assets/af8ff316-8495-40a0-83c5-a9347939d367)
-
+<img src="https://github.com/user-attachments/assets/af8ff316-8495-40a0-83c5-a9347939d367" width="600" height="350">
+<hr>
 ---
-![Screenshot 2025-07-08 015442](https://github.com/user-attachments/assets/b45eef24-f6ac-4d90-be6f-317cbf5235c5)
-
+<img src="https://github.com/user-attachments/assets/b45eef24-f6ac-4d90-be6f-317cbf5235c5" width="600" height="350">
+<hr>
 ---
-![Screenshot 2025-07-08 015525](https://github.com/user-attachments/assets/f74d9a3e-07dd-411d-b814-6813ddfb9989)
-
+<img src="https://github.com/user-attachments/assets/f74d9a3e-07dd-411d-b814-6813ddfb9989" width="600" height="350">
+---
