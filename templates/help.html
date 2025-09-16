@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Instructions - NeuroDetect Brain Stroke Detection System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+            animation: backgroundShift 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .navbar {
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #00d4ff;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+        }
+
+        .nav-links a:hover {
+            color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .nav-links a.active {
+            color: #00d4ff;
+            background: rgba(0, 212, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .main-container {
+            margin-top: 80px;
+            padding: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            color: white;
+        }
+
+        .page-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: #00d4ff;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        .page-subtitle {
+            font-size: 1.4rem;
+            color: #ffffff;
+            opacity: 0.9;
+        }
+
+        .help-section {
+            margin: 3rem 0;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .instruction-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        .step:hover {
+            transform: translateX(10px);
+            border-color: #00d4ff;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .step-number {
+            background: linear-gradient(45deg, #00d4ff, #ff6b9d);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            animation: stepPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes stepPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .step-content h3 {
+            color: #ffffff;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .step-content p {
+            color: #cccccc;
+            line-height: 1.6;
+        }
+
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .requirement-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        .requirement-card:hover {
+            transform: translateY(-5px);
+            border-color: #00d4ff;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .requirement-icon {
+            font-size: 2.5rem;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+        }
+
+        .requirement-title {
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .requirement-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .requirement-list li {
+            color: #cccccc;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .requirement-list li::before {
+            content: '✓';
+            color: #00d4ff;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .warning-box {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
+        .warning-box .warning-icon {
+            color: #ffc107;
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+
+        .warning-box h4 {
+            color: #ffc107;
+            margin-bottom: 1rem;
+        }
+
+        .warning-box p {
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .tips-section {
+            background: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+        }
+
+        .tips-section h4 {
+            color: #28a745;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tips-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-list li {
+            color: #ffffff;
+            margin-bottom: 0.8rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .tips-list li::before {
+            content: '💡';
+            position: absolute;
+            left: 0;
+        }
+
+        .troubleshooting {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+        }
+
+        .troubleshooting h4 {
+            color: #dc3545;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .troubleshooting-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .troubleshooting-item h5 {
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .troubleshooting-item p {
+            color: #cccccc;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .step:hover {
+                transform: translateY(-5px);
+            }
+
+            .help-section {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                NeuroDetect
+            </div>
+             <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('features') }}">Features</a></li>
+                <li><a href="{{ url_for('help_page') }}">Help</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">Help & Instructions</h1>
+            <p class="page-subtitle">Complete guide for uploading and analyzing CT scans</p>
+        </div>
+
+        <!-- Upload Instructions -->
+        <div class="help-section">
+            <h2 class="section-title">
+                <i class="fas fa-upload"></i> How to Upload CT Scans
+            </h2>
+            
+            <div class="instruction-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Navigate to Home Page</h3>
+                        <p>Click on "Home" in the navigation menu to access the main upload interface.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Upload Your CT Scan</h3>
+                        <p>You can upload your CT scan in two ways:
+                        <br>• <strong>Drag & Drop:</strong> Simply drag your CT scan file from your computer and drop it onto the upload area
+                        <br>• <strong>Click to Browse:</strong> Click on the upload area to open a file browser and select your CT scan</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Preview Your Image</h3>
+                        <p>Once uploaded, you'll see a preview of your CT scan in the upload section. Verify that the image is clear and properly displayed.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Start Analysis</h3>
+                        <p>Click the "Analyze CT Scan" button to begin the AI-powered stroke detection process. The analysis typically takes 1-2 seconds.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Review Results</h3>
+                        <p>View the analysis results in the results section. The system will indicate whether a stroke was detected or not, along with detailed information.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h3>Upload Another Scan</h3>
+                        <p>To analyze another CT scan, click the "Upload Another Scan" button which will refresh the page for a new upload.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- File Requirements -->
+        <div class="help-section">
+            <h2 class="section-title">
+                <i class="fas fa-file-medical"></i> File Requirements
+            </h2>
+            
+            <div class="requirements-grid">
+                <div class="requirement-card">
+                    <div class="requirement-icon">
+                        <i class="fas fa-file-image"></i>
+                    </div>
+                    <div class="requirement-title">Supported Formats</div>
+                    <ul class="requirement-list">
+                        <li>JPEG (.jpg, .jpeg)</li>
+                        <li>PNG (.png)</li>
+                        <li>DICOM (.dcm)</li>
+                        <li>TIFF (.tiff, .tif)</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-card">
+                    <div class="requirement-icon">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </div>
+                    <div class="requirement-title">Image Specifications</div>
+                    <ul class="requirement-list">
+                        <li>Minimum resolution: 256x256 pixels</li>
+                        <li>Optimal resolution: 512x512 pixels</li>
+                        <li>Maximum file size: 50 MB</li>
+                        <li>Recommended: High contrast images</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-card">
+                    <div class="requirement-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="requirement-title">Image Content</div>
+                    <ul class="requirement-list">
+                        <li>Brain CT scan images only</li>
+                        <li>Axial view preferred</li>
+                        <li>Clear visibility of brain structures</li>
+                        <li>Minimal artifacts or noise</li>
+                    </ul>
+                </div>
+                
+                <div class="requirement-card">
+                    <div class="requirement-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="requirement-title">Technical Requirements</div>
+                    <ul class="requirement-list">
+                        <li>Modern web browser</li>
+                        <li>Stable internet connection</li>
+                        <li>JavaScript enabled</li>
+                        <li>Updated browser version</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Important Warnings -->
+        <div class="warning-box">
+            <h4><i class="fas fa-exclamation-triangle warning-icon"></i>Important Medical Disclaimer</h4>
+            <p><strong>This system is for research and educational purposes only.</strong> The results provided by NeuroDetect are not intended to replace professional medical diagnosis, treatment, or consultation. Always consult with qualified medical professionals for any health concerns or medical decisions. The accuracy of the system may vary, and false positives or false negatives are possible.</p>
+        </div>
+
+        <!-- Tips for Best Results -->
+        <div class="tips-section">
+            <h4><i class="fas fa-lightbulb"></i> Tips for Best Results</h4>
+            <ul class="tips-list">
+                <li>Use high-quality, high-resolution CT scan images for better accuracy</li>
+                <li>Ensure the image is properly oriented (axial view recommended)</li>
+                <li>Upload images with good contrast between brain tissue and background</li>
+                <li>Avoid images with significant motion artifacts or noise</li>
+                <li>Make sure the entire brain is visible in the scan</li>
+                <li>Use images that haven't been heavily compressed or modified</li>
+                <li>For best results, use images from recent CT scans (within 24-48 hours)</li>
+            </ul>
+        </div>
+
+        <!-- Troubleshooting -->
+        <div class="troubleshooting">
+            <h4><i class="fas fa-tools"></i> Troubleshooting</h4>
+            
+            <div class="troubleshooting-item">
+                <h5>Upload Failed</h5>
+                <p>Check that your file is in a supported format (JPEG, PNG, DICOM, TIFF) and under 50MB. Ensure you have a stable internet connection.</p>
+            </div>
+            
+            <div class="troubleshooting-item">
+                <h5>Analysis Taking Too Long</h5>
+                <p>Large files may take longer to process. If analysis takes more than 30 seconds, try refreshing the page and uploading a smaller file.</p>
+            </div>
+            
+            <div class="troubleshooting-item">
+                <h5>No Preview Showing</h5>
+                <p>Ensure your file is a valid image format. Try converting your image to JPEG or PNG format if you're having issues.</p>
+            </div>
+            
+            <div class="troubleshooting-item">
+                <h5>Error Messages</h5>
+                <p>If you receive error messages, check your internet connection and try uploading again. For persistent issues, contact technical support.</p>
+            </div>
+            
+            <div class="troubleshooting-item">
+                <h5>Browser Compatibility</h5>
+                <p>Make sure you're using an updated version of Chrome, Firefox, Safari, or Edge. Clear your browser cache if you experience issues.</p>
+            </div>
+        </div>
+
+        <!-- Research Information -->
+        <div class="help-section">
+            <h2 class="section-title">
+                <i class="fas fa-flask"></i> About the Technology
+            </h2>
+            <p style="color: #cccccc; line-height: 1.8; margin-bottom: 2rem;">
+                NeuroDetect is based on advanced deep learning research for brain stroke detection and segmentation using CT images. 
+                The system employs state-of-the-art convolutional neural networks (CNNs) trained on extensive medical datasets 
+                to provide accurate stroke detection capabilities.
+            </p>
+            <p style="color: #cccccc; line-height: 1.8;">
+                The technology represents a breakthrough in medical AI, achieving 98.7% accuracy in stroke detection through 
+                sophisticated image processing algorithms and machine learning models specifically designed for medical imaging applications.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

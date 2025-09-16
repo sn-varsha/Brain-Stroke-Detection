@@ -16,8 +16,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # ---------- Dizin Ayarları ----------
-root_dir = r'C:\Users\Asus\Desktop\stroke-images'  # Burayı kendi kullanıcı adına göre değiştir!
-image_dir = os.path.join(root_dir, 'images')
+root_dir = r'D:\Stroke_Detection-and-Segmentation-by-Using-CNN-ML\all_png_images'  # Burayı kendi kullanıcı adına göre değiştir!
+# image_dir = os.path.join(root_dir, 'images')
+image_dir = root_dir
 
 # ---------- Dataset Sınıfı ----------
 class StrokeDataset(Dataset):
@@ -80,7 +81,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=1e-4)
 
 # ---------- Eğitim ----------
-num_epochs = 10
+num_epochs = 20
 for epoch in range(num_epochs):
     model.train()
     running_loss = 0.0

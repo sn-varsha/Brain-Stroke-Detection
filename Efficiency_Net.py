@@ -11,8 +11,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # ---------- Dizin Ayarları ----------
-root_dir = r'C:\Users\Asus\Desktop\stroke-images6600'
-image_dir = os.path.join(root_dir, 'images')
+root_dir = r'D:\Stroke_Detection-and-Segmentation-by-Using-CNN-ML\all_png_images'
+# image_dir = os.path.join(root_dir, 'images')
+image_dir = root_dir
 
 # ---------- Dataset Sınıfı ----------
 class StrokeDataset(Dataset):
@@ -22,12 +23,22 @@ class StrokeDataset(Dataset):
         self.transform = transform
         class_to_idx = {'non-stroke': 0, 'hemorrhage': 1, 'ischemic': 2}
 
+        # for cls in os.listdir(image_root):
+        #     cls_folder = os.path.join(image_root, cls)
+        #     if os.path.isdir(cls_folder):
+        #         for img_name in os.listdir(cls_folder):
+        #             self.image_paths.append(os.path.join(cls_folder, img_name))
+        #             self.labels.append(class_to_idx[cls])
+
         for cls in os.listdir(image_root):
             cls_folder = os.path.join(image_root, cls)
             if os.path.isdir(cls_folder):
                 for img_name in os.listdir(cls_folder):
-                    self.image_paths.append(os.path.join(cls_folder, img_name))
-                    self.labels.append(class_to_idx[cls])
+                    img_path = os.path.join(cls_folder, img_name)
+                    # Only add if it's a file and has a valid image extension
+                    if os.path.isfile(img_path) and img_name.lower().endswith(('.png', '.jpg', '.jpeg')):
+                        self.image_paths.append(img_path)
+                        self.labels.append(class_to_idx[cls])
 
     def __len__(self):
         return len(self.image_paths)
@@ -142,8 +153,12 @@ print(f"\nTest Accuracy: {test_accuracy:.2f}%")
 print(f"Test Loss: {test_loss:.4f}")
 print(f"Weighted F1 Score: {f1*100:.2f}%\n")
 
+print("Unique labels in test set:", np.unique(all_labels))
+print("Unique predictions:", np.unique(all_preds))
+
 print("Classification Report:")
-print(classification_report(all_labels, all_preds, target_names=['non-stroke', 'hemorrhage', 'ischemic'], digits=4))
+# print(classification_report(all_labels, all_preds, target_names=['non-stroke', 'hemorrhage', 'ischemic'], digits=4))
+print(classification_report(all_labels, all_preds, labels=[0,1,2], target_names=['non-stroke', 'hemorrhage', 'ischemic'], digits=4))
 
 # Confusion Matrix
 cm = confusion_matrix(all_labels, all_preds)
@@ -178,4 +193,4 @@ plt.show()
 # ---------- Model Kaydı ----------
 model_path = os.path.join(root_dir, 'EfficiencyNet_stroke_classification_6600.pth')
 torch.save(model.state_dict(), model_path)
-print(f"Model kaydedildi: {model_path}")
+print(f"The model has been saved: {model_path}")

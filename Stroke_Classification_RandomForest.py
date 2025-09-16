@@ -7,10 +7,10 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # 1. Veriyi oku
-df = pd.read_csv(r"/Users/emin/Downloads/balanced_top35_selected_features.csv")
+df = pd.read_csv(r"D:\Stroke_Detection-and-Segmentation-by-Using-CNN-ML\Features\all_features_balanced.csv")
 
 # 2. Özellik ve etiket ayır
-X = df.drop(columns=["filename", "label", "hastalik"])
+X = df.drop(columns=["filename", "label", "Disorder"])
 y = df["label"]
 
 clf = RandomForestClassifier(
@@ -23,7 +23,7 @@ clf = RandomForestClassifier(
     random_state=42
 )
 # Sınıf adları eşleştir
-class_names = ["non-stroke", "iskemi", "kanama"]
+class_names = ["non-stroke", "ischemic", "hemorrhage"]
 
 # 3. K-Fold ayarları
 kf = StratifiedKFold(n_splits=10, shuffle=True, random_state=25)
@@ -58,13 +58,13 @@ for fold, (train_idx, val_idx) in enumerate(kf.split(X, y)):
     all_y_true.extend(y_val)
     all_y_pred.extend(y_val_pred)
 
-    print(f"🔁 Fold {fold+1}")
-    print(f"  🏋️‍♂️ Train Accuracy: {train_acc:.4f} | F1: {train_f1:.4f}")
-    print(f"  📊 Val   Accuracy: {val_acc:.4f} | F1: {val_f1:.4f}")
+    print(f"Fold {fold+1}")
+    print(f"Train Accuracy: {train_acc:.4f} | F1: {train_f1:.4f}")
+    print(f"Val   Accuracy: {val_acc:.4f} | F1: {val_f1:.4f}")
     print("-" * 40)
 
 # 5. Ortalama sonuçlar
-print("==== 📊 Ortalama Sonuçlar ====")
+print("==== Ortalama Sonuçlar ====")
 print(f"Train Accuracy (avg): {np.mean(train_accuracies):.4f}")
 print(f"Train F1 Score  (avg): {np.mean(train_f1s):.4f}")
 print(f"Val   Accuracy (avg): {np.mean(val_accuracies):.4f}")
@@ -74,19 +74,19 @@ print(f"Val   F1 Score  (avg): {np.mean(val_f1s):.4f}")
 cm = confusion_matrix(all_y_true, all_y_pred)
 plt.figure(figsize=(6,4))
 sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=class_names, yticklabels=class_names)
-plt.title("Confusion Matrix (Tüm Fold'lar)")
+plt.title("Confusion Matrix (All Folds)")
 plt.xlabel("Predicted")
 plt.ylabel("Actual")
 plt.show()
 
 # 7. Classification raporu
-print("\n🧾 Classification Report:\n", classification_report(all_y_true, all_y_pred, target_names=class_names))
+print("\n Classification Report:\n", classification_report(all_y_true, all_y_pred, target_names=class_names))
 
 # 8. Genel Accuracy ve F1
 final_acc = accuracy_score(all_y_true, all_y_pred)
 final_f1 = f1_score(all_y_true, all_y_pred, average='weighted')
-print(f"\n🎯 Final Accuracy on Full Validation Set: {final_acc:.4f}")
-print(f"🎯 Final Weighted F1 Score: {final_f1:.4f}")
+print(f"\n Final Accuracy on Full Validation Set: {final_acc:.4f}")
+print(f" Final Weighted F1 Score: {final_f1:.4f}")
 
 # 9. Feature Importance
 importances = clf.feature_importances_
@@ -97,10 +97,10 @@ importance_df = importance_df.sort_values(by="Importance", ascending=False)
 # 10. Çizim
 plt.figure(figsize=(8, 6))
 sns.barplot(x="Importance", y="Feature", data=importance_df.head(15))
-plt.title("🔍 Top 15 Feature Importances")
+plt.title(" Top 15 Feature Importances")
 plt.tight_layout()
 plt.show()
 
 # 11. İstersen terminale yazdır (opsiyonel)
-print("\n📌 En Önemli Özellikler:")
+print("\n Most Important Features:")
 print(importance_df.head(10).to_string(index=False))

@@ -89,8 +89,8 @@ def extract_massive_features(img):
     return features
 
 # Ana dizin
-base_path = "/Users/emin/Desktop/Biomedical/dataset"
-classes = ["iskemi", "kanama", "yok"]
+base_path = r"D:\Stroke_Detection-and-Segmentation-by-Using-CNN-ML\all_png_images"
+classes = ["ischemic", "hemorrhage", "non-stroke"]
 
 data = []
 
@@ -104,7 +104,7 @@ for label, cls in enumerate(classes):
                 continue
             feats = extract_massive_features(img)
             feats["label"] = label
-            feats["hastalik"] = cls
+            feats["disorder"] = cls
             feats["filename"] = fname
             data.append(feats)
 
@@ -112,4 +112,4 @@ for label, cls in enumerate(classes):
 
 df = pd.DataFrame(data)
 df.to_csv("all_features.csv", index=False)
-print("✅ Tüm özellikler çıkarıldı ve all_features.csv dosyasına kaydedildi.")
+print("All features have been extracted and saved into all_features.csv.")

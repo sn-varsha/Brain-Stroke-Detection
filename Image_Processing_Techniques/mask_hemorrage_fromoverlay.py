@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 import os
 
-OVERLAY_DIR = '/Users/emin/Library/CloudStorage/GoogleDrive-eminsoylemezzz@gmail.com/My Drive/1. PROJECTS/BioMedical Dataset/İNME VERİ SETİ/Eğitim Veri Seti_Kanama/Kanama Veri Seti/OVERLAY'
-MASK_SAVE_DIR = '/Users/emin/Library/CloudStorage/GoogleDrive-eminsoylemezzz@gmail.com/My Drive/1. PROJECTS/BioMedical Dataset/İNME VERİ SETİ/Eğitim Veri Seti_Kanama/Kanama Veri Seti/MASK'  # yeni oluşturulacak klasör
+OVERLAY_DIR = 'D:\Stroke_Detection-and-Segmentation-by-Using-CNN-ML\hemorrhage\OVERLAY'
+MASK_SAVE_DIR = 'D:\Stroke_Detection-and-Segmentation-by-Using-CNN-ML\hemorrhage\MASK'  # new folder to be created
 os.makedirs(MASK_SAVE_DIR, exist_ok=True)
 
 for fname in os.listdir(OVERLAY_DIR):
@@ -31,4 +31,4 @@ for fname in os.listdir(OVERLAY_DIR):
     save_path = os.path.join(MASK_SAVE_DIR, fname)
     cv2.imwrite(save_path, mask)
 
-    print(f"{fname} işlendi ve maskesi kaydedildi.")
+    print(f"{fname} processed and its mask was saved.")

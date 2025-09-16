@@ -1,0 +1,29 @@
+{
+    "shapes": [
+        {
+            "label": "stroke",
+            "points": [
+                [
+                    244,
+                    273
+                ],
+                [
+                    244,
+                    277
+                ],
+                [
+                    249,
+                    277
+                ],
+                [
+                    249,
+                    273
+                ]
+            ]
+        }
+    ],
+    "imagePath": "12817.png",
+    "imageData": null,
+    "imageHeight": 512,
+    "imageWidth": 512
+}

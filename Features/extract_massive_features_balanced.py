@@ -79,8 +79,8 @@ def extract_massive_features(img):
 
     return features
 
-base_path = "/Users/emin/Desktop/Biomedical/dataset"
-classes = ["iskemi", "kanama", "yok"]
+base_path = r"D:\Stroke_Detection-and-Segmentation-by-Using-CNN-ML\all_png_images"
+classes = ["ischemic", "hemorrhage", "non-stroke"]
 data = []
 
 for label, cls in enumerate(classes):
@@ -93,16 +93,16 @@ for label, cls in enumerate(classes):
                 continue
             feats = extract_massive_features(img)
             feats["label"] = label
-            feats["hastalik"] = cls
+            feats["Disorder"] = cls
             feats["filename"] = fname
             data.append(feats)
 
 df = pd.DataFrame(data)
 df.to_csv("all_features.csv", index=False)
-print("✅ Tüm özellikler çıkarıldı ve all_features.csv dosyasına kaydedildi.")
+print("All features have been extracted and saved to the file all_features.csv.")
 
 # Balancing
 min_count = df["label"].value_counts().min()
 df_balanced = df.groupby("label", group_keys=False).apply(lambda x: x.sample(min_count, random_state=42))
 df_balanced.to_csv("all_features_balanced.csv", index=False)
-print(f"✅ Dataset balanced with {min_count} samples per class. Saved to all_features_balanced.csv.")
+print(f"Dataset balanced with {min_count} samples per class. Saved to all_features_balanced.csv.")
