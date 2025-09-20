@@ -14,7 +14,7 @@ def extract_massive_features(img):
     features = {}
     img = cv2.resize(img, (256, 256))
 
-    # Histogram özellikleri
+    # Histogram features
     hist = cv2.calcHist([img], [0], None, [256], [0, 256]).flatten()
     hist_norm = hist / (np.sum(hist) + 1e-6)
     features.update({
@@ -25,7 +25,7 @@ def extract_massive_features(img):
         "hist_std": np.std(hist),
     })
 
-    # İstatistiksel
+    # Statistical
     features.update({
         "mean": np.mean(img),
         "std": np.std(img),
@@ -35,7 +35,7 @@ def extract_massive_features(img):
         "var": np.var(img)
     })
 
-    # GLCM (çok açı, mesafe)
+    # GLCM (multiple angles, distance)
     distances = [1, 2, 3, 4]
     angles = [0, np.pi/4, np.pi/2, 3*np.pi/4]
     props = ['contrast', 'dissimilarity', 'homogeneity', 'energy', 'correlation', 'ASM']
@@ -88,7 +88,7 @@ def extract_massive_features(img):
 
     return features
 
-# Ana dizin
+# Main directory
 base_path = r"D:\Stroke_Detection-and-Segmentation-by-Using-CNN-ML\all_png_images"
 classes = ["ischemic", "hemorrhage", "non-stroke"]
 

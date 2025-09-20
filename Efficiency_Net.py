@@ -10,12 +10,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# ---------- Dizin Ayarları ----------
+# ---------- Directory Settings ----------
 root_dir = r'D:\Stroke_Detection-and-Segmentation-by-Using-CNN-ML\all_png_images'
 # image_dir = os.path.join(root_dir, 'images')
 image_dir = root_dir
 
-# ---------- Dataset Sınıfı ----------
+# ---------- Dataset Class ----------
 class StrokeDataset(Dataset):
     def __init__(self, image_root, transform=None):
         self.image_paths = []
@@ -50,14 +50,14 @@ class StrokeDataset(Dataset):
             image = self.transform(image)
         return image, label
 
-# ---------- Transformasyonlar ----------
+# ---------- Transformations ----------
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
 
-# ---------- Dataset ve Split ----------
+# ---------- Dataset and Split ----------
 dataset = StrokeDataset(image_dir, transform=transform)
 train_size = int(0.7 * len(dataset))
 val_size = int(0.1 * len(dataset))
@@ -74,12 +74,12 @@ model.fc = nn.Linear(model.fc.in_features, 3)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = model.to(device)
 
-# ---------- Loss ve Optimizer ----------
+# ---------- Loss and Optimizer ----------
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=1e-4)
 
-# ---------- Eğitim ----------
-num_epochs = 15  # Epoch sayısını 15 olarak belirledik
+# ---------- Training ----------
+num_epochs = 15  # We set the number of epochs to 15
 for epoch in range(num_epochs):
     model.train()
     train_loss = 0.0
@@ -123,7 +123,7 @@ for epoch in range(num_epochs):
           f"Train Acc: {train_accuracy:.2f}% "
           f"Val Acc: {val_accuracy:.2f}%")
 
-# ---------- Test ve Değerlendirme ----------
+# ---------- Test and Evaluation ----------
 model.eval()
 all_preds, all_labels, all_probs = [], [], []
 test_loss = 0.0
@@ -190,7 +190,7 @@ plt.legend(loc="lower right")
 plt.grid()
 plt.show()
 
-# ---------- Model Kaydı ----------
+# ---------- Model Saving ----------
 model_path = os.path.join(root_dir, 'EfficiencyNet_stroke_classification_6600.pth')
 torch.save(model.state_dict(), model_path)
 print(f"The model has been saved: {model_path}")

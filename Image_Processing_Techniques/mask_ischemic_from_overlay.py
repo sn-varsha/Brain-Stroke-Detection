@@ -13,21 +13,21 @@ for fname in os.listdir(OVERLAY_DIR):
     path = os.path.join(OVERLAY_DIR, fname)
     img = cv2.imread(path)
 
-    # BGR'den HSV'ye dönüştürme
+    # Convert from BGR to HSV
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-    # Kırmızı renk aralıkları (HSV)
+    # Red color ranges (HSV)
     lower_red1 = np.array([0, 70, 50])
     upper_red1 = np.array([10, 255, 255])
     lower_red2 = np.array([170, 70, 50])
     upper_red2 = np.array([180, 255, 255])
 
-    # Maskeleri oluşturma
+    # Do not create the masks
     mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
     mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
     mask = cv2.bitwise_or(mask1, mask2)
 
-    # Maskeyi kaydetme
+    # Do not save the mask
     save_path = os.path.join(MASK_SAVE_DIR, fname)
     cv2.imwrite(save_path, mask)
 

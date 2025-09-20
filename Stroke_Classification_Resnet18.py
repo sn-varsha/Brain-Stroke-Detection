@@ -2,7 +2,7 @@
 # Stroke Classification (ResNet18)
 # ==============================
 
-# Gerekli kütüphaneler
+# Required libraries
 import os
 import torch
 import torch.nn as nn
@@ -15,12 +15,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# ---------- Dizin Ayarları ----------
-root_dir = r'D:\Stroke_Detection-and-Segmentation-by-Using-CNN-ML\all_png_images'  # Burayı kendi kullanıcı adına göre değiştir!
+# ---------- Directory Settings ----------
+root_dir = r'D:\Stroke_Detection-and-Segmentation-by-Using-CNN-ML\all_png_images'  # Change this according to your own username!
 # image_dir = os.path.join(root_dir, 'images')
 image_dir = root_dir
 
-# ---------- Dataset Sınıfı ----------
+# ---------- Dataset Class ----------
 class StrokeDataset(Dataset):
     def __init__(self, image_root, transform=None):
         self.image_paths = []
@@ -42,7 +42,7 @@ class StrokeDataset(Dataset):
 
     def __getitem__(self, idx):
         img_path = self.image_paths[idx]
-        image = Image.open(img_path).convert('RGB')  # RGB'ye çeviriyoruz
+        image = Image.open(img_path).convert('RGB')  # We are converting to RGB
         label = self.labels[idx]
 
         if self.transform:
@@ -50,7 +50,7 @@ class StrokeDataset(Dataset):
 
         return image, label
 
-# ---------- Transformasyonlar ----------
+# ---------- Transformations ----------
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
@@ -58,10 +58,10 @@ transform = transforms.Compose([
                          [0.229, 0.224, 0.225])
 ])
 
-# ---------- Dataset ve DataLoader ----------
+# ---------- Dataset and DataLoader ----------
 dataset = StrokeDataset(image_root=image_dir, transform=transform)
 
-# Dataseti %80 train %20 test şeklinde bölüyoruz
+# We split the dataset into 80% train and 20% test
 train_size = int(0.8 * len(dataset))
 test_size = len(dataset) - train_size
 train_dataset, test_dataset = random_split(dataset, [train_size, test_size])
@@ -71,16 +71,16 @@ test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
 # ---------- Model: Pretrained ResNet18 ----------
 model = models.resnet18(pretrained=True)
-model.fc = nn.Linear(model.fc.in_features, 3)  # 3 sınıf (non-stroke, hemorrhage, ischemic)
+model.fc = nn.Linear(model.fc.in_features, 3)  # 3 classes (non-stroke, hemorrhage, ischemic)
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = model.to(device)
 
-# ---------- Loss ve Optimizer ----------
+# ---------- Loss and Optimizer ----------
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=1e-4)
 
-# ---------- Eğitim ----------
+# ---------- Training ----------
 num_epochs = 20
 for epoch in range(num_epochs):
     model.train()
@@ -100,7 +100,7 @@ for epoch in range(num_epochs):
 
     print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {running_loss/len(train_loader):.4f}")
 
-# ---------- Test + Grafiklerle Evaluation ----------
+# ---------- Test + Evaluation with Graphs ----------
 model.eval()
 all_preds = []
 all_labels = []
@@ -120,7 +120,7 @@ with torch.no_grad():
         all_labels.extend(labels.cpu().numpy())
         all_probs.extend(probs.cpu().numpy())
 
-# Skorlar
+# Scores
 accuracy = accuracy_score(all_labels, all_preds)
 f1 = f1_score(all_labels, all_preds, average='weighted')
 

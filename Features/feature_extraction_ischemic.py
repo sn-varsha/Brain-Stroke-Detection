@@ -5,31 +5,31 @@ import pandas as pd
 from skimage.feature import graycomatrix, graycoprops
 from scipy.stats import entropy, skew, kurtosis
 
-IMG_DIR = r"D:\Stroke_Detection-and-Segmentation-by-Using-CNN-ML\ischemic\PNG"  # Beyin görüntüleri
-MASK_DIR = r"D:\Stroke_Detection-and-Segmentation-by-Using-CNN-ML\ischemic\MASK"   # Maskelerin bulunduğu klasör
+IMG_DIR = r"D:\Stroke_Detection-and-Segmentation-by-Using-CNN-ML\ischemic\PNG"  # Brain images
+MASK_DIR = r"D:\Stroke_Detection-and-Segmentation-by-Using-CNN-ML\ischemic\MASK"   # Folder containing the masks
 features_list = []
 
 for fname in sorted(os.listdir(IMG_DIR)):
     img_path = os.path.join(IMG_DIR, fname)
-    mask_path = os.path.join(MASK_DIR, fname)  # Maske adı ile görüntü adı aynı varsayılıyor
+    mask_path = os.path.join(MASK_DIR, fname)  # It is assumed that the mask name is the same as the image name
 
-    # Görüntü ve maskeyi oku
+    # Read the image and the mask
     img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
     mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
 
     if img is None or mask is None:
         continue
 
-    # Maskeyi uygula
+    # Apply the mask
     region = cv2.bitwise_and(img, img, mask=mask)
 
-    # Maskelenmiş bölgedeki sıfır olmayan pikselleri al
+    # Take the non-zero pixels in the masked region
     masked_pixels = region[mask > 0]
 
     if masked_pixels.size == 0:
         continue
 
-    # İstatistiksel özellikler
+    # Statistical features
     f_mean = np.mean(masked_pixels)
     f_std = np.std(masked_pixels)
     f_var = np.var(masked_pixels)
@@ -43,7 +43,7 @@ for fname in sorted(os.listdir(IMG_DIR)):
     f_max = np.max(masked_pixels)
     f_range = f_max - f_min
 
-    # Histogram bazlı
+    # Histogram-based
     hist = np.histogram(masked_pixels, bins=16)[0]
     f_hist_mean = np.mean(hist)
     f_hist_std = np.std(hist)
@@ -52,14 +52,14 @@ for fname in sorted(os.listdir(IMG_DIR)):
     f_hist_kurt = kurtosis(hist)
     f_hist_max_bin = np.max(hist)
 
-    # GLCM doku özellikleri (region sadece maske içindeki değerleri barındırmalı)
+    # GLCM texture features (region should contain only values within the mask)
     region_masked = np.zeros_like(region)
     region_masked[mask > 0] = region[mask > 0]
 
     distances = [2, 3, 4]
     angles = [0, np.pi/4, np.pi/2, 3*np.pi/4]
 
-    # GLCM için boyut küçültme ve normalizasyon (256 seviyeden daha az seviyeye)
+    # Dimensionality reduction and normalization for GLCM (to fewer than 256 levels)
     region_quantized = cv2.normalize(region_masked, None, alpha=0, beta=15, norm_type=cv2.NORM_MINMAX).astype(np.uint8)
 
     glcm = graycomatrix(region_quantized, distances=distances, angles=angles, symmetric=True, normed=True)
@@ -86,7 +86,7 @@ columns = ['filename', 'mean', 'std', 'var', 'median', 'iqr', 'mad', 'skew', 'ku
            'ASM_0', 'ASM_45', 'ASM_90', 'ASM_135',
            'energy_0', 'energy_45', 'energy_90', 'energy_135']
 
-# Veriyi dataframe'e çevir ve kaydet
+# Convert the data to a dataframe and save it
 df_features = pd.DataFrame(features_list, columns=columns)
 df_features.to_csv("features_ischemic.csv", index=False)
 print("Features were extracted from the masked region and saved.")

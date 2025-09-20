@@ -14,14 +14,14 @@ for fname in sorted(os.listdir(IMG_DIR)):
     if img is None:
         continue
 
-    # Normalize et (0-255 aralığına)
+    # Normalize (to the 0–255 range)
     region = cv2.normalize(img, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
     region = region.astype(np.uint8)
     
     if region.size == 0:
         continue
 
-    # İstatistiksel özellikler
+    # Statistical features
     f_mean = np.mean(region)
     f_std = np.std(region)
     f_var = np.var(region)
@@ -35,7 +35,7 @@ for fname in sorted(os.listdir(IMG_DIR)):
     f_max = np.max(region)
     f_range = f_max - f_min
 
-    # Histogram bazlı
+    # Histogram-based
     hist = np.histogram(region, bins=16)[0]
     f_hist_mean = np.mean(hist)
     f_hist_std = np.std(hist)
@@ -44,7 +44,7 @@ for fname in sorted(os.listdir(IMG_DIR)):
     f_hist_kurt = kurtosis(hist)
     f_hist_max_bin = np.max(hist)
 
-    # GLCM doku özellikleri
+    # GLCM texture features
     distances = [2, 3, 4]
     angles = [0, np.pi/4, np.pi/2, 3*np.pi/4]
     glcm = graycomatrix(region, distances=distances, angles=angles, symmetric=True, normed=True)
@@ -71,7 +71,7 @@ columns = ['filename', 'mean', 'std', 'var', 'median', 'iqr', 'mad', 'skew', 'ku
            'ASM_0', 'ASM_45', 'ASM_90', 'ASM_135',
            'energy_0', 'energy_45', 'energy_90', 'energy_135']
 
-# Veriyi dataframe'e çevir
+# Convert the data to a dataframe
 df_ischemic_nonstroke = pd.DataFrame(features_list, columns=columns)
 df_ischemic_nonstroke.to_csv("features_ischemic_non-stroke.csv", index=False)
 print("Dummy features were extracted and the normalized 'No Ischemia' features were saved.")
